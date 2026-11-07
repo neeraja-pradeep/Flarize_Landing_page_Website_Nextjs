@@ -1,26 +1,149 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+/* ------------------------------------------------------------------ *
+ * Design tokens (Flarize landing page). Never hardcode hex in components.
+ * ------------------------------------------------------------------ */
+@theme {
+  /* Brand */
+  --color-brand-900: #123532;
+  --color-brand-600: #0f6d4f;
+  --color-brand-700: #0c5a42;
+  --color-brand-50: #e6f4ef;
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+  /* Accent (gold) */
+  --color-accent: #f7ba41;
+  --color-accent-hover: #f5b301;
+  --color-accent-soft: #fef3e8;
+  --color-accent-dark: #b7791f;
+  --color-accent-darker: #7c5a10;
+  --color-on-accent: #111111;
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  /* Neutrals */
+  --color-ink: #191c1d;
+  --color-gray-700: #374151;
+  --color-gray-500: #6b7280;
+  --color-gray-300: #d1d5db;
+  --color-gray-200: #e5e7eb;
+  --color-gray-100: #f1f5f9;
+  --color-gray-50: #f9fafb;
+  --color-field-border: #eaeaea;
+  --color-field-bg: #fafafa;
+  --color-placeholder: #828282;
+  --color-sand: #f7f6f3;
+
+  /* Status / third party */
+  --color-danger: #dc2626;
+  --color-danger-dark: #991b1b;
+  --color-danger-border: #ef4444;
+  --color-whatsapp: #25d366;
+
+  /* Typography */
+  --font-sans: var(--font-poppins), system-ui, sans-serif;
+  --font-malayalam: var(--font-noto-malayalam), var(--font-poppins), sans-serif;
+  /* Design uses the browser-default line height unless a leading-* is set explicitly */
+  --text-xs--line-height: normal;
+  --text-sm--line-height: normal;
+  --text-base--line-height: normal;
+  --text-lg--line-height: normal;
+  --text-hero: clamp(30px, 4.2vw, 50px);
+  --text-hero--line-height: 1.38;
+  --text-section: clamp(26px, 3.4vw, 38px);
+  --text-section--line-height: 1.2;
+  --text-stat: clamp(34px, 4vw, 44px);
+  --text-stat--line-height: 1.1;
+
+  /* Radii */
+  --radius-control: 12px;
+  --radius-card: 16px;
+  --radius-field: 5px;
+
+  /* Shadows */
+  --shadow-header: 0 4px 4px -1px rgb(12 12 13 / 0.08);
+  --shadow-card: 0 2px 4px rgb(12 12 13 / 0.04);
+  --shadow-form: 0 20px 40px -12px rgb(0 0 0 / 0.35);
+  --shadow-popup: 0 12px 32px rgb(12 12 13 / 0.18);
+  --shadow-float: 0 6px 16px rgb(12 12 13 / 0.18);
+  --shadow-float-strong: 0 6px 16px rgb(12 12 13 / 0.22);
+  --shadow-bar: 0 -2px 4px rgb(0 0 0 / 0.11);
+
+  /* Layout breakpoints, named by purpose. rem units so they sort with Tailwind's defaults (sm = 40rem). */
+  --breakpoint-xs: 26.25rem;
+  --breakpoint-tablet: 47.5rem;
+  --breakpoint-steps: 53.75rem;
+  --breakpoint-bento: 60rem;
+  --breakpoint-float: 83.75rem;
+
+  /* Motion */
+  --animate-ring-pulse: ring-pulse 900ms ease-out 2;
+  @keyframes ring-pulse {
+    0% {
+      box-shadow: 0 0 0 0 rgb(247 186 65 / 0.9);
+    }
+    100% {
+      box-shadow: 0 0 0 14px rgb(247 186 65 / 0);
+    }
   }
 }
 
+/* ------------------------------------------------------------------ *
+ * Layout + background utilities reused across sections
+ * ------------------------------------------------------------------ */
+@utility px-gutter {
+  padding-inline: clamp(16px, 4vw, 32px);
+}
+
+@utility py-section {
+  padding-block: clamp(56px, 8vw, 96px);
+}
+
+@utility bg-brand-gradient {
+  background-image: linear-gradient(
+    135deg,
+    var(--color-brand-600) 0%,
+    var(--color-brand-900) 100%
+  );
+}
+
+@utility bg-brand-gradient-tilt {
+  background-image: linear-gradient(
+    160deg,
+    var(--color-brand-600) 0%,
+    var(--color-brand-900) 100%
+  );
+}
+
+/* Hero photo overlay: vertical on phones, horizontal from tablet up */
+@utility bg-hero-overlay {
+  background-image: linear-gradient(
+    180deg,
+    rgb(18 53 50 / 0.82) 0%,
+    rgb(18 53 50 / 0.9) 45%,
+    rgb(18 53 50 / 0.96) 100%
+  );
+  @variant tablet {
+    background-image: linear-gradient(
+      90deg,
+      rgb(18 53 50 / 0.94) 0%,
+      rgb(18 53 50 / 0.82) 42%,
+      rgb(18 53 50 / 0.35) 100%
+    );
+  }
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: #fff;
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  line-height: normal; /* matches the approved design (browser default) */
+  -webkit-font-smoothing: antialiased;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
 }
